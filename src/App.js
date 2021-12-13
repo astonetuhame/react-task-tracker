@@ -1,7 +1,12 @@
-import Header from './components/Header'
-import Tasks from './components/Tasks'
 import { useState, useEffect } from "react"
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
+import About from './components/About'
+
+
 
 const App = () => {
 
@@ -65,10 +70,10 @@ const App = () => {
   }
 
   //Toggle Reminder
-  const toggleReminder = async(id) => {
+  const toggleReminder = async (id) => {
     const tastToToggle = await fetchTask(id)
-    const updTask = {...tastToToggle, reminder: !tastToToggle.reminder}
-    
+    const updTask = { ...tastToToggle, reminder: !tastToToggle.reminder }
+
     const res = await fetch(`http://localhost:5000/tasks/${id}`, {
       method: 'PUT',
       headers: {
@@ -80,20 +85,34 @@ const App = () => {
     const data = await res.json()
 
     setTasks(
-      tasks.map((task) => 
-      task.id === id ? 
-      { ...task, reminder: data.reminder } : 
-      task
+      tasks.map((task) =>
+        task.id === id ?
+          { ...task, reminder: data.reminder } :
+          task
       ))
-    }
+  }
 
 
   return (
-    <div className="container">
-      <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} title="Task Tracker" />
-      {showAddTask && <AddTask onAdd={addTask} />}
-      {tasks.length > 0 ? (<Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />) : ('No Tasks To show')}
-    </div>
+    <Router>
+      <div className="container">
+        <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} title="Task Tracker" />
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <>
+                {showAddTask && <AddTask onAdd={addTask} />}
+                {tasks.length > 0 ? (<Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />) : ('No Tasks To show')}
+              </>
+            }
+          />
+          <Route path="/about" element={<About />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
+
   );
 }
 
