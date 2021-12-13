@@ -1,5 +1,5 @@
 # Task Tracker
-A task tracker app built with Reactjs
+A task tracker app built with React.js
 
 ## Installation
 ```
