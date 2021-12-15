@@ -2,7 +2,7 @@
 A task tracker app built with React.js
 
 ## Requirements before installation
-* Should have [NodeJs](https://nodejs.org) installed 
+* [NodeJs](https://nodejs.org) should be installed 
 
 ## Installation
 ```
